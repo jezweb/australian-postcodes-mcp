@@ -11,10 +11,10 @@ import httpx
 from metaphone import doublemetaphone
 
 # Add parent directory to path for imports
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from src.database import Database
-from src.utils.config import Config
+from database import Database
+from utils.config import Config
 
 logging.basicConfig(
     level=logging.INFO,

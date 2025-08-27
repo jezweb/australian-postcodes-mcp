@@ -71,36 +71,12 @@ mcp = FastMCP(
     version="1.0.0"
 )
 
-# Server metadata
-mcp.add_metadata({
-    "description": "Comprehensive Australian postcodes and suburbs lookup service",
-    "author": "Jezweb",
-    "contact": "jeremy@jezweb.net",
-    "capabilities": [
-        "Postcode to suburb lookup",
-        "Suburb to postcode lookup",
-        "Fuzzy matching for misspelled suburbs",
-        "Phonetic search for voice input",
-        "Local Government Area (LGA) queries",
-        "Geographic radius search",
-        "Autocomplete suggestions",
-        "State-based statistics"
-    ],
-    "data_source": "https://github.com/matthewproctor/australianpostcodes",
-    "total_records": "~17,000 postcode-suburb combinations",
-    "coverage": "All Australian states and territories"
-})
-
 # ============================================================================
 # SEARCH TOOLS
 # ============================================================================
 
 @mcp.tool(
-    description="Find all suburbs for a given postcode",
-    examples=[
-        {"postcode": "2000"},
-        {"postcode": "3141"}
-    ]
+    description="Find all suburbs for a given postcode"
 )
 async def search_postcode(postcode: str) -> Dict[str, Any]:
     """Find suburbs by postcode (4 digits)."""
@@ -108,12 +84,7 @@ async def search_postcode(postcode: str) -> Dict[str, Any]:
     return await search_by_postcode(postcode)
 
 @mcp.tool(
-    description="Find postcodes for a suburb name",
-    examples=[
-        {"suburb": "Newcastle", "state": "NSW"},
-        {"suburb": "Richmond"},
-        {"suburb": "Surry Hills", "state": "NSW"}
-    ]
+    description="Find postcodes for a suburb name"
 )
 async def search_suburb(suburb: str, state: str = None) -> Dict[str, Any]:
     """Find postcodes by suburb name with optional state filter."""
@@ -121,11 +92,7 @@ async def search_suburb(suburb: str, state: str = None) -> Dict[str, Any]:
     return await search_by_suburb(suburb, state)
 
 @mcp.tool(
-    description="Validate if a suburb-postcode combination is correct",
-    examples=[
-        {"suburb": "Sydney", "postcode": "2000"},
-        {"suburb": "Melbourne", "postcode": "3000", "state": "VIC"}
-    ]
+    description="Validate if a suburb-postcode combination is correct"
 )
 async def validate_combination(
     suburb: str,
@@ -137,12 +104,7 @@ async def validate_combination(
     return await validate_suburb_postcode(suburb, postcode, state)
 
 @mcp.tool(
-    description="Smart search accepting either postcode or suburb name",
-    examples=[
-        {"query": "2000"},
-        {"query": "Newcastle"},
-        {"query": "Brisbane, QLD"}
-    ]
+    description="Smart search accepting either postcode or suburb name"
 )
 async def smart_search(query: str) -> Dict[str, Any]:
     """Intelligent search that detects query type."""
@@ -154,12 +116,7 @@ async def smart_search(query: str) -> Dict[str, Any]:
 # ============================================================================
 
 @mcp.tool(
-    description="Find similar suburbs for possibly misspelled names",
-    examples=[
-        {"misspelled": "Sydny"},
-        {"misspelled": "Melborn", "state": "VIC"},
-        {"misspelled": "New Castle", "threshold": 0.8}
-    ]
+    description="Find similar suburbs for possibly misspelled names"
 )
 async def fuzzy_match_suburb(
     misspelled: str,
@@ -171,12 +128,7 @@ async def fuzzy_match_suburb(
     return await find_similar_suburbs(misspelled, state, threshold)
 
 @mcp.tool(
-    description="Get autocomplete suggestions for partial suburb names",
-    examples=[
-        {"partial": "Syd"},
-        {"partial": "Mel", "state": "VIC"},
-        {"partial": "Bris", "limit": 5}
-    ]
+    description="Get autocomplete suggestions for partial suburb names"
 )
 async def autocomplete(
     partial: str,
@@ -188,11 +140,7 @@ async def autocomplete(
     return await autocomplete_suburb(partial, state, limit)
 
 @mcp.tool(
-    description="Check spelling and suggest corrections for suburbs",
-    examples=[
-        {"suburb": "Sydny"},
-        {"suburb": "Brisben"}
-    ]
+    description="Check spelling and suggest corrections for suburbs"
 )
 async def check_spelling(suburb: str) -> Dict[str, Any]:
     """Validate suburb spelling and suggest corrections."""
@@ -200,12 +148,7 @@ async def check_spelling(suburb: str) -> Dict[str, Any]:
     return await validate_spelling(suburb)
 
 @mcp.tool(
-    description="Search suburbs by phonetic similarity (for voice input)",
-    examples=[
-        {"spoken_name": "New Castle"},
-        {"spoken_name": "Saint Kilda"},
-        {"spoken_name": "Wooloomooloo"}
-    ]
+    description="Search suburbs by phonetic similarity (for voice input)"
 )
 async def voice_search(spoken_name: str) -> Dict[str, Any]:
     """Find suburbs based on how they sound."""
@@ -217,12 +160,7 @@ async def voice_search(spoken_name: str) -> Dict[str, Any]:
 # ============================================================================
 
 @mcp.tool(
-    description="List all suburbs in a Local Government Area (city/council)",
-    examples=[
-        {"lga_name": "Newcastle"},
-        {"lga_name": "Sydney", "state": "NSW"},
-        {"lga_name": "Brisbane"}
-    ]
+    description="List all suburbs in a Local Government Area (city/council)"
 )
 async def suburbs_in_lga(
     lga_name: str,
@@ -233,11 +171,7 @@ async def suburbs_in_lga(
     return await list_suburbs_in_lga(lga_name, state)
 
 @mcp.tool(
-    description="Find the LGA (city/council) for a suburb",
-    examples=[
-        {"suburb": "Bondi Beach"},
-        {"suburb": "St Kilda", "state": "VIC"}
-    ]
+    description="Find the LGA (city/council) for a suburb"
 )
 async def get_suburb_lga(
     suburb: str,
@@ -248,11 +182,7 @@ async def get_suburb_lga(
     return await find_lga_for_suburb(suburb, state)
 
 @mcp.tool(
-    description="Find suburbs within radius of a location",
-    examples=[
-        {"postcode_or_suburb": "2000", "radius_km": 5},
-        {"postcode_or_suburb": "Melbourne", "radius_km": 10, "state": "VIC"}
-    ]
+    description="Find suburbs within radius of a location"
 )
 async def suburbs_within_radius(
     postcode_or_suburb: str,
@@ -267,11 +197,7 @@ async def suburbs_within_radius(
     return await list_suburbs_in_radius(postcode_or_suburb, radius_km, state)
 
 @mcp.tool(
-    description="Find neighboring suburbs (adjacent areas)",
-    examples=[
-        {"suburb": "Bondi"},
-        {"suburb": "Richmond", "state": "VIC", "max_neighbors": 5}
-    ]
+    description="Find neighboring suburbs (adjacent areas)"
 )
 async def find_neighbors(
     suburb: str,
@@ -287,12 +213,7 @@ async def find_neighbors(
 # ============================================================================
 
 @mcp.tool(
-    description="Get statistics for a state or all states",
-    examples=[
-        {"state": "NSW"},
-        {"state": "VIC"},
-        {}
-    ]
+    description="Get statistics for a state or all states"
 )
 async def state_stats(state: str = None) -> Dict[str, Any]:
     """Get comprehensive state statistics."""
@@ -300,12 +221,7 @@ async def state_stats(state: str = None) -> Dict[str, Any]:
     return await get_state_statistics(state)
 
 @mcp.tool(
-    description="List all Local Government Areas",
-    examples=[
-        {},
-        {"state": "NSW"},
-        {"state": "VIC", "include_suburbs_count": True}
-    ]
+    description="List all Local Government Areas"
 )
 async def list_lgas(
     state: str = None,
@@ -316,12 +232,7 @@ async def list_lgas(
     return await list_all_lgas(state, include_suburbs_count)
 
 @mcp.tool(
-    description="Search suburbs by region name",
-    examples=[
-        {"region": "Hunter"},
-        {"region": "Illawarra", "state": "NSW"},
-        {"region": "Gold Coast"}
-    ]
+    description="Search suburbs by region name"
 )
 async def search_region(
     region: str,
@@ -332,8 +243,7 @@ async def search_region(
     return await search_by_region(region, state)
 
 @mcp.tool(
-    description="Check database and service health status",
-    examples=[{}]
+    description="Check database and service health status"
 )
 async def check_health() -> Dict[str, Any]:
     """Perform system health check."""
